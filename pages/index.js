@@ -1,105 +1,56 @@
-import { useState } from 'react'
-import { AiFillGithub, AiFillLinkedin, AiFillGoogleCircle, AiOutlineCopyrightCircle, AiOutlineEdit, AiOutlinePlus } from 'react-icons/ai'
+'use client'
 
-export default function Example() {
+import { useRouter } from 'next/navigation'
+import { AiOutlineSearch, AiOutlinePlus, AiFillPlusCircle } from 'react-icons/ai'
+import Header from './components/header'
+import Footer from './components/footer'
+
+export default function App() {
+  const router = useRouter()
+
   return (
     <div className="h-screen">
-      <div className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]">
-        <svg
-          className="relative left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
-          viewBox="0 0 1155 678"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill="url(#45de2b6b-92d5-4d68-a6a0-9b9b2abad533)"
-            fillOpacity=".3"
-            d="M317.219 518.975L203.852 678 0 438.341l317.219 80.634 204.172-286.402c1.307 132.337 45.083 346.658 209.733 145.248C936.936 126.058 882.053-94.234 1031.02 41.331c119.18 108.451 130.68 295.337 121.53 375.223L855 299l21.173 362.054-558.954-142.079z"
-          />
-          <defs>
-            <linearGradient
-              id="45de2b6b-92d5-4d68-a6a0-9b9b2abad533"
-              x1="1155.49"
-              x2="-78.208"
-              y1=".177"
-              y2="474.645"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#9089FC" />
-              <stop offset={1} stopColor="#FF80B5" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-      <div className="lg:px-6 py-4 px-40 bg-white border border-b-slate shadow-sm fixed top-0 w-full z-50">
-        <nav className="flex h-9 items-center justify-between" aria-label="Global">
-          <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">DASCUDA</span>
-              <h1 className="text-dark font-bold text-xl font-sans">DASCUDA</h1>
-            </a>
-          </div>
-        </nav>
-      </div>
+      <Header />
       <main className="h-screen">
-        <div className="relative sm:px-12 lg:px-8 h-full">
-          <div className="flex h-full flex-col justify-center">
-            <div className="flex sm:flex-col h-full mt-1 justify-center items-center">
-              <div className="flex bg-primary-1 sm:h-[32%] h-80 w-[350px] sm:w-auto rounded-3xl flex flex-col items-center justify-center p-10 drop-shadow-xl group hover:cursor-pointer">
-                <span className="mb-3 text-3xl text-light text-center font-mono">Update Exiting Students Data</span>
-                <div className="border border-light rounded-full h-12 w-12 flex items-center justify-center group-hover:bg-light">
-                  <AiOutlineEdit className="text-2xl text-light group-hover:text-primary-1" />
-                </div>
-              </div>
-              <div className="m-3"></div>
-              <div className="flex bg-transparent sm:h-[30%] h-80 w-[350px] sm:w-auto rounded-3xl border border-primary-1 border-dashed flex flex-col items-center justify-center p-10 drop-shadow-xl group hover:cursor-pointer">
-                <span className="mb-3 text-3xl text-dark text-center font-mono">Add New Students Data</span>
-                <div className="border border-primary-1 rounded-full h-12 w-12 flex items-center justify-center group-hover:bg-primary-1">
-                  <AiOutlinePlus className="text-2xl text-primary-1 group-hover:text-light" />
-                </div>
-              </div>
+        <div className="relative px-7 h-full pt-[70px]">
+          <div className="h-full">
+            <div className='pt-5'>
+              <h1 className='font-bold text-3xl'>Welcome!</h1>
+              <p className='text-dark'>Please proceed by searching the name of the student to add 
+                their new information or Add new student by pressing + .</p>
             </div>
 
-            <div>
-              <div className="absolute inset-x-0 top-[calc(100%-1rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-                <svg
-                  className="relative left-[calc(50%+1rem)] h-[21.1875rem] max-w-none -translate-x-1/2 sm:left-[calc(50%+36rem)] sm:h-[42.375rem]"
-                  viewBox="0 0 1155 678"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill="url(#ecb5b0c9-546c-4772-8c71-4d3f06d544bc)"
-                    fillOpacity=".3"
-                    d="M317.219 518.975L203.852 678 0 438.341l317.219 80.634 204.172-286.402c1.307 132.337 45.083 346.658 209.733 145.248C936.936 126.058 882.053-94.234 1031.02 41.331c119.18 108.451 130.68 295.337 121.53 375.223L855 299l21.173 362.054-558.954-142.079z"
-                  />
-                  <defs>
-                    <linearGradient
-                      id="ecb5b0c9-546c-4772-8c71-4d3f06d544bc"
-                      x1="1155.49"
-                      x2="-78.208"
-                      y1=".177"
-                      y2="474.645"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop stopColor="#9089FC" />
-                      <stop offset={1} stopColor="#FF80B5" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+            {/* <div className='mt-5 flex gap-2'>
+              <button className='w-1/2 bg-primary-1 py-3 px-4 text-light rounded-md'>Update Student</button>
+              <button className='w-1/2 py-3 px-4 text-primary-1 border border-primary-1 rounded-md'>Add Student</button>
+            </div> */}
+
+            <div className='mt-5 flex items-center border border-primary-1 rounded-md px-2'>
+              <AiOutlineSearch className="text-2xl text-primary-1 group-hover:text-light" />
+              <input className='h-10 w-full pl-2 bg-transparent outline-none' placeholder='Search name' type="text" />
+            </div>
+
+            <div className='mt-4'>
+              <div className='bg-primary-1 h-10 flex items-center px-2 rounded-tr-md rounded-tl-md'>
+                <span className='text-light text-center w-10 mr-2'>#No</span>
+                <span className='text-light w-full'>Name</span>
+              </div>
+              <div className='flex items-center h-10 border border-primary-1 px-2'>
+                <span className='w-10 mr-2 text-center'>1</span>
+                <button className='w-full text-left' onClick={() => router.push('/update?id=1')}>Usmaila Abdoul</button>
               </div>
             </div>
           </div>
         </div>
       </main>
-      <footer className="py-2 px-40 sm:px-5 bg-dark fixed bottom-0 w-full z-50 flex justify-end">
-        <div className="flex items-center">
-          <a href="#"><AiFillGoogleCircle className="fill-white mr-2 hover:fill-light hover:cursor-pointer" size={20} /></a>
-          <a href="#"><AiFillLinkedin className="fill-white mr-2 hover:fill-light hover:cursor-pointer" size={20} /></a>
-          <a href="#"><AiFillGithub className="fill-white mr-2 hover:fill-light hover:cursor-pointer" size={20} /></a>
-          <div className="ml-auto text-light flex items-center font-mono text-sm">Abdoul 2023 <AiOutlineCopyrightCircle size={12} className="ml-1" /></div>
-        </div>
-      </footer>
+      <button 
+        className='fixed bottom-12 right-7 z-50 flex justify-end w-auto py-4 px-4 bg-primary-1 rounded-full outline-none'
+        onClick={() => router.push('/create')}
+      >
+        <AiOutlinePlus className="text-2xl text-light group-hover:text-primary-1"/>
+      </button>
+
+      <Footer />
     </div>
   )
 }
