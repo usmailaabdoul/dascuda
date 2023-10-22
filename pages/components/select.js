@@ -17,7 +17,6 @@ export default function Select({
           <select 
             className={`h-10 w-full pl-2 bg-transparent outline-none ${value ? 'text-dark' : 'text-gray-400'}`}
             value={value}
-            defaultValue={value}
             onChange={(e) => onChange(e.target.value)}
           >
             <option value='' className='text-lg'>{placeholder}</option>

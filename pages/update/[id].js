@@ -1,22 +1,30 @@
-'use client'
-
-import {useState} from "react";
-import Header from "./components/header";
-import Footer from "./components/footer";
-import Input from "./components/input";
-import Select from "./components/select";
+import { useState, useEffect} from "react";
+import { useRouter } from 'next/router';
+import Header from "../components/header";
+import Footer from "../components/footer";
+import Input from "../components/input";
+import Select from "../components/select";
 import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook } from "react-icons/ai";
 import { BsGenderAmbiguous } from "react-icons/bs";
+import prisma from '../../lib/prisma';
 
-export default function Create() {
+export default function Update(props) {
+  const [student, setStudent] = useState(props.student);
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const addStudent = async () => {
+  useEffect(() => {
+    setStudent(props.student)
+  }, [props.student])
+  
+  const router = useRouter();
+  if (router.isFallback)  return <div className="h-full w-full d-flex items-center justify-center">Loading...</div>;
+
+  const updateStudent = async () => {
     setLoading(true)
     try {
-      let res = await fetch(`/api/student/add`, {
-        method: 'POST',
+      let res = await fetch(`/api/student/${props.id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -24,18 +32,21 @@ export default function Create() {
       });
       res = await res.json();
       console.log({res})
+      setStudent(res);
       setLoading(false)
     } catch (error) {
       setLoading(false)
-      console.log({error})
-      alert('Unable to add new student, internal error')
+      alert('Unable to update student, internal error')
     }
   }
 
   const onChange = (value, field) => {
     const data = {...form}
+    const _student = {...student}
     data[field] = value;
+    _student[field] = value;
     setForm(data)
+    setStudent(_student)
   }
 
   return (
@@ -45,29 +56,29 @@ export default function Create() {
         <div className="relative px-7 h-full pt-[70px]">
           <div className="h-full">
             <div className="pt-5">
-              <h1 className="font-bold text-3xl">Add new student</h1>
+              <h1 className="font-bold text-3xl">Update students information</h1>
             </div>
 
             <div className="">
               <Input 
-                label='Name'
-                value={form?.name}
+                value={student?.name}
                 onChange={(value) => onChange(value, 'name')}
+                label='Name'
                 placeholder="Enter student's name"
                 renderIcon={<AiOutlineUser className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Select 
                 label='Gender'
-                value={form?.gender}
+                value={student?.gender}
                 onChange={(value) => onChange(value, 'gender')}
                 placeholder='Select gender'
                 options={[{value: 'female', label: 'Female'}, {value: 'male', label: 'Male'}]}
                 renderIcon={<BsGenderAmbiguous className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Select 
-                label='Type of education'
-                value={form?.education}
+                value={student?.education.toLowerCase()}
                 onChange={(value) => onChange(value, 'education')}
+                label='Type of education'
                 placeholder='Select education'
                 options={[
                   {value: 'ajamiya', label: 'Ajamiya'},
@@ -77,53 +88,53 @@ export default function Create() {
                 renderIcon={<AiOutlineAccountBook className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 
-                label='Level (University or Secondary or High School or Primary)'
-                value={form?.level}
+                value={student?.level}
                 onChange={(value) => onChange(value, 'level')}
+                label='Level (University or Secondary or High School or Primary)'
                 placeholder="Enter education level"
                 renderIcon={<AiOutlineBook className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 
-                label='Class or Form or Year in University'
-                value={form?.class}
+                value={student?.class}
                 onChange={(value) => onChange(value, 'class')}
+                label='Class or Form or Year in University'
                 placeholder="Enter class"
                 renderIcon={<AiOutlineReconciliation className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 
-                label='Parents or Guardian Name'
-                value={form?.parents_name}
+                value={student?.parents_name}
                 onChange={(value) => onChange(value, 'parents_name')}
+                label='Parents or Guardian Name'
                 placeholder="Enter parents/gaurdian's name"
                 renderIcon={<AiOutlineTeam className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 
-                label='Phone Number (parents/gaurdians/students)'
-                value={form?.phone}
+                value={student?.phone}
                 onChange={(value) => onChange(value, 'phone')}
+                label='Phone Number (parents/gaurdians/students)'
                 placeholder="Enter phone number"
                 type="number"
                 renderIcon={<AiOutlinePhone className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 
-                label='Location of child'
-                value={form?.child_location}
+                value={student?.child_location}
                 onChange={(value) => onChange(value, 'child_location')}
+                label='Location of child'
                 placeholder="Enter location"
                 renderIcon={<AiOutlineTag className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 
-                label='Location of parents'
-                value={form?.parents_location}
+                value={student?.parents_location}
                 onChange={(value) => onChange(value, 'parents_location')}
+                label='Location of parents'
                 placeholder="Enter location"
                 renderIcon={<AiOutlineTag className="text-2xl text-primary-1 group-hover:text-light" />}
               />
             </div>
 
             <div className='pb-16'>
-              <button
-                onClick={() => addStudent()} 
+              <button 
+                onClick={() => updateStudent()} 
                 disabled={loading}
                 className="flex items-center justify-center bg-primary-1 py-3 px-4 text-light rounded-md w-full mt-5"
               >
@@ -136,7 +147,7 @@ export default function Create() {
                     <span className="sr-only">Loading...</span>
                   </div>
                 ): (
-                  'Add student'
+                  'Update'
                 )}
               </button>
             </div>
@@ -146,4 +157,23 @@ export default function Create() {
       <Footer />
     </div>
   );
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { id: '' } }, { params: { id: '' } }],
+    fallback: true,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const student = await prisma.student.findUnique({
+    where: {
+      id: params.id
+    }
+  });
+  return { 
+    props: { student, id: params.id }, 
+    revalidate: 10 
+  }
 }

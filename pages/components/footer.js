@@ -1,4 +1,3 @@
-import React from 'react'
 import { AiFillGithub, AiFillLinkedin, AiFillGoogleCircle, AiOutlineCopyrightCircle } from 'react-icons/ai'
 
 const Footer = () => {
