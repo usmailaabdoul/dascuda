@@ -21,7 +21,7 @@ export default function Select({
             onChange={(e) => onChange(e.target.value)}
           >
             <option value='' className='text-lg'>{placeholder}</option>
-            {options.map((option) => (
+            {options?.map((option) => (
               <option key={option.value} value={option.value} className='text-lg'>{option.label}</option>
             ))}
           </select>
