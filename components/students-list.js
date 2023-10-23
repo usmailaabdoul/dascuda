@@ -20,6 +20,11 @@ const StudentsList = ({students}) => {
           </div>
         )
       })}
+      {students?.length == 0 && (
+        <div className='flex items-center justify-center h-10 border-b border-r border-l border-primary-1 px-2 rounded-bl-md rounded-br-md'>
+          <span className='w-full text-center'>No student found</span>
+        </div>
+      )}
     </div>
   )
 }

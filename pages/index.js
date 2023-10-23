@@ -1,5 +1,6 @@
+import { useState, useEffect} from "react";
 import { useRouter } from 'next/navigation'
-import { AiOutlineSearch, AiOutlinePlus, AiFillPlusCircle } from 'react-icons/ai'
+import { AiOutlineSearch, AiOutlinePlus } from 'react-icons/ai'
 import Header from '../components/header'
 import Footer from '../components/footer'
 import StudentsList from '../components/students-list'
@@ -7,8 +8,20 @@ import prisma from '../lib/prisma';
 import {studentsData} from '../utils/data';
 
 export default function App({students}) {
-  const router = useRouter()
+  const router = useRouter();
+  const [data, setData] = useState(students ?? []);
+  const [term, setTerm] = useState('');
 
+  useEffect(() => {
+    setData(students)
+  }, [students])
+
+  const searchStudents = (term) => {
+    setTerm(term);
+    const filteredStudents = students?.filter(student => student?.name?.toLowerCase().includes(term.toLowerCase()));
+    setData(filteredStudents);
+  }
+  
   return (
     <div className="h-screen">
       <Header />
@@ -28,10 +41,16 @@ export default function App({students}) {
 
             <div className='mt-5 flex items-center border border-primary-1 rounded-md px-2'>
               <AiOutlineSearch className="text-2xl text-primary-1 group-hover:text-light" />
-              <input className='h-10 w-full pl-2 bg-transparent outline-none' placeholder='Search name' type="text" />
+              <input 
+                className='h-10 w-full pl-2 bg-transparent outline-none'
+                placeholder='Search name'
+                type="text"
+                value={term}
+                onChange={(e) => searchStudents(e.target.value)}
+              />
             </div>
 
-            <StudentsList students={students} />
+            <StudentsList students={data} />
           </div>
         </div>
       </main>
