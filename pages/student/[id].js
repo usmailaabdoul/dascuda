@@ -6,9 +6,12 @@ import Input from "../../components/input";
 import Select from "../../components/select";
 import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook } from "react-icons/ai";
 import { BsGenderAmbiguous } from "react-icons/bs";
+import Swal from 'sweetalert2'
 
 export default function Update(props) {
   const router = useRouter();
+  const studentId = router.query.id;
+
   const [student, setStudent] = useState({});
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
@@ -16,7 +19,6 @@ export default function Update(props) {
 
   useEffect(() => {
     const getStudent = async () => {
-      const studentId = router.query.id;
       setLoading(true)
       try {
         let res = await fetch(`/api/student/${studentId}`, {
@@ -26,22 +28,25 @@ export default function Update(props) {
           },
         });
         res = await res.json();
-        console.log({res})
         setStudent(res);
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
-        setLoading(false)
-        alert('Unable to GET student, internal error')
+        setLoading(false);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Unable to GET student, internal error',
+        })
       }
     }
 
     getStudent()
-  }, [router.query.id])
+  }, [studentId])
 
   const updateStudent = async () => {
     setUpdating(true)
     try {
-      let res = await fetch(`/api/student/${props?.id}`, {
+      let res = await fetch(`/api/student/${studentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -49,12 +54,20 @@ export default function Update(props) {
         body: JSON.stringify(form)
       });
       res = await res.json();
-      console.log({res})
       setStudent(res);
-      setUpdating(false)
+      setUpdating(false);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Updated student information successfully',
+      })
     } catch (error) {
-      setUpdating(false)
-      alert('Unable to update student, internal error')
+      setUpdating(false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Unable to update student, internal error',
+      });
     }
   }
 
