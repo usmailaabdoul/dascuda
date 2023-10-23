@@ -33,9 +33,10 @@ const Header = () => {
       <div className="lg:px-6 py-4 px-40 bg-white border border-b-slate shadow-sm fixed top-0 w-full z-50">
         <nav className="flex h-9 items-center justify-between" aria-label="Global">
           <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
-            <a href="#" className="-m-1.5 p-1.5">
+            <a href="#" className="-m-1.5 p-1.5 flex items-center">
               <span className="sr-only">DASCUDA</span>
               <h1 className="text-dark font-bold text-xl font-sans">DASCUDA</h1>
+              <span className='ml-2 text-primary-1'>student records</span>
             </a>
           </div>
         </nav>

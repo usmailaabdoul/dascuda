@@ -32,9 +32,9 @@ const Footer = () => {
       </div>
       <footer className="py-2 px-40 sm:px-5 bg-dark fixed bottom-0 w-full z-50 flex justify-end">
         <div className="flex items-center">
-          <a href="#"><AiFillGoogleCircle className="fill-white mr-2 hover:fill-light hover:cursor-pointer" size={20} /></a>
-          <a href="#"><AiFillLinkedin className="fill-white mr-2 hover:fill-light hover:cursor-pointer" size={20} /></a>
-          <a href="#"><AiFillGithub className="fill-white mr-2 hover:fill-light hover:cursor-pointer" size={20} /></a>
+          <a href="mailto:ismaelabdul77@gmail.com"><AiFillGoogleCircle className="fill-white mr-2 hover:fill-light hover:cursor-pointer" size={20} /></a>
+          <a href="https://www.linkedin.com/in/usmaila-abdoul-moumini-475486183/" rel="noreferrer" target='_blank'><AiFillLinkedin className="fill-white mr-2 hover:fill-light hover:cursor-pointer" size={20} /></a>
+          <a href="https://github.com/usmailaabdoul" rel="noreferrer" target='_blank'><AiFillGithub className="fill-white mr-2 hover:fill-light hover:cursor-pointer" size={20} /></a>
           <div className="ml-auto text-light flex items-center font-mono text-sm">Abdoul 2023 <AiOutlineCopyrightCircle size={12} className="ml-1" /></div>
         </div>
       </footer>
