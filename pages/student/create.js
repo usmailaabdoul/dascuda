@@ -7,6 +7,7 @@ import Input from "../../components/input";
 import Select from "../../components/select";
 import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook } from "react-icons/ai";
 import { BsGenderAmbiguous } from "react-icons/bs";
+import Swal from 'sweetalert2'
 
 export default function Create() {
   const [form, setForm] = useState({});
@@ -23,12 +24,31 @@ export default function Create() {
         body: JSON.stringify(form)
       });
       res = await res.json();
-      console.log({res})
-      setLoading(false)
+      setLoading(false);
+      setForm({
+        name: '',
+        gender: '',
+        education: '',
+        level: '',
+        class: '',
+        parents_name: '',
+        phone: '',
+        child_location: '',
+        parents_location: '',
+      })
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Successfully added new student',
+      })
     } catch (error) {
       setLoading(false)
       console.log({error})
-      alert('Unable to add new student, internal error')
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Unable to add new student, internal error',
+      })
     }
   }
 
