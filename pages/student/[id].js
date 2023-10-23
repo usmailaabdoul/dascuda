@@ -1,29 +1,47 @@
 import { useState, useEffect} from "react";
 import { useRouter } from 'next/router';
-import Header from "../components/header";
-import Footer from "../components/footer";
-import Input from "../components/input";
-import Select from "../components/select";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
+import Input from "../../components/input";
+import Select from "../../components/select";
 import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook } from "react-icons/ai";
 import { BsGenderAmbiguous } from "react-icons/bs";
-import prisma from '../../lib/prisma';
 
 export default function Update(props) {
-  const [student, setStudent] = useState(props.student);
+  const router = useRouter();
+  const [student, setStudent] = useState({});
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
-    setStudent(props.student)
-  }, [props.student])
-  
-  const router = useRouter();
-  if (router.isFallback)  return <div className="h-full w-full d-flex items-center justify-center">Loading...</div>;
+    const getStudent = async () => {
+      const studentId = router.query.id;
+      setLoading(true)
+      try {
+        let res = await fetch(`/api/student/${studentId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+        res = await res.json();
+        console.log({res})
+        setStudent(res);
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        alert('Unable to GET student, internal error')
+      }
+    }
+
+    getStudent()
+  }, [router.query.id])
 
   const updateStudent = async () => {
-    setLoading(true)
+    setUpdating(true)
     try {
-      let res = await fetch(`/api/student/${props.id}`, {
+      let res = await fetch(`/api/student/${props?.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -33,9 +51,9 @@ export default function Update(props) {
       res = await res.json();
       console.log({res})
       setStudent(res);
-      setLoading(false)
+      setUpdating(false)
     } catch (error) {
-      setLoading(false)
+      setUpdating(false)
       alert('Unable to update student, internal error')
     }
   }
@@ -48,6 +66,8 @@ export default function Update(props) {
     setForm(data)
     setStudent(_student)
   }
+
+  if (router.isFallback || loading)  return <div className="h-full w-full d-flex items-center justify-center">Loading...</div>;
 
   return (
     <div className="h-screen">
@@ -76,7 +96,7 @@ export default function Update(props) {
                 renderIcon={<BsGenderAmbiguous className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Select 
-                value={student?.education.toLowerCase()}
+                value={student?.education?.toLowerCase()}
                 onChange={(value) => onChange(value, 'education')}
                 label='Type of education'
                 placeholder='Select education'
@@ -135,10 +155,10 @@ export default function Update(props) {
             <div className='pb-16'>
               <button 
                 onClick={() => updateStudent()} 
-                disabled={loading}
+                disabled={updating}
                 className="flex items-center justify-center bg-primary-1 py-3 px-4 text-light rounded-md w-full mt-5"
               >
-                {loading ? (
+                {updating ? (
                   <div role="status">
                     <svg aria-hidden="true" className="w-6 h-6 text-gray-200 animate-spin dark:text-light fill-primary-2" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
@@ -157,23 +177,4 @@ export default function Update(props) {
       <Footer />
     </div>
   );
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [{ params: { id: '' } }, { params: { id: '' } }],
-    fallback: true,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const student = await prisma.student.findUnique({
-    where: {
-      id: params.id
-    }
-  });
-  return { 
-    props: { student, id: params.id }, 
-    revalidate: 10 
-  }
 }

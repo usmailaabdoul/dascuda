@@ -1,8 +1,8 @@
 import { useRouter } from 'next/navigation'
 import { AiOutlineSearch, AiOutlinePlus, AiFillPlusCircle } from 'react-icons/ai'
-import Header from './components/header'
-import Footer from './components/footer'
-import StudentsList from './components/students-list'
+import Header from '../components/header'
+import Footer from '../components/footer'
+import StudentsList from '../components/students-list'
 import prisma from '../lib/prisma';
 import {studentsData} from '../utils/data';
 
@@ -37,11 +37,10 @@ export default function App({students}) {
       </main>
       <button 
         className='fixed bottom-12 right-7 z-50 flex justify-end w-auto py-4 px-4 bg-primary-1 rounded-full outline-none'
-        onClick={() => router.push('/create')}
+        onClick={() => router.push('/student/create')}
       >
         <AiOutlinePlus className="text-2xl text-light group-hover:text-primary-1"/>
       </button>
-
       <Footer />
     </div>
   )

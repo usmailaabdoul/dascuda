@@ -1,10 +1,10 @@
 'use client'
 
 import {useState} from "react";
-import Header from "./components/header";
-import Footer from "./components/footer";
-import Input from "./components/input";
-import Select from "./components/select";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
+import Input from "../../components/input";
+import Select from "../../components/select";
 import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook } from "react-icons/ai";
 import { BsGenderAmbiguous } from "react-icons/bs";
 
