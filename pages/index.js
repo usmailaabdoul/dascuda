@@ -87,7 +87,11 @@ export async function getStaticProps() {
   };
   // seedStudents()
 
-  const students = await prisma.student.findMany();
+  const students = await prisma.student.findMany({
+    orderBy: {
+      name: 'asc'
+    }
+  });
   return { 
     props: { students }, 
     revalidate: 10 

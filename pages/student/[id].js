@@ -146,7 +146,6 @@ export default function Update(props) {
                 onChange={(value) => onChange(value, 'phone')}
                 label='Phone Number (parents/gaurdians/students)'
                 placeholder="Enter phone number"
-                type="number"
                 renderIcon={<AiOutlinePhone className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 

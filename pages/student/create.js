@@ -97,7 +97,7 @@ export default function Create() {
                 renderIcon={<AiOutlineAccountBook className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 
-                label='Level (University or Secondary or High School or Primary)'
+                label='Level (University/High School/Secondary or Primary School)'
                 value={form?.level}
                 onChange={(value) => onChange(value, 'level')}
                 placeholder="Enter education level"
@@ -122,7 +122,6 @@ export default function Create() {
                 value={form?.phone}
                 onChange={(value) => onChange(value, 'phone')}
                 placeholder="Enter phone number"
-                type="number"
                 renderIcon={<AiOutlinePhone className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 
