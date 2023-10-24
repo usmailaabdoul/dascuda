@@ -88,8 +88,12 @@ export async function getStaticProps() {
   // seedStudents()
 
   const students = await prisma.student.findMany({
+    where: {
+      mode: 'insensitive'
+    },
     orderBy: {
-      name: 'asc'
+      name: 'asc',
+      mode: 'insensitive'
     }
   });
   return { 
