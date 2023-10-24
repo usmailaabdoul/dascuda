@@ -58,6 +58,16 @@ export default function Create() {
     setForm(data)
   }
 
+  function toSentenceCase(str) {
+    const words = str.split(' ');
+  
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+    }
+  
+    return words.join(' ');
+  }
+
   return (
     <div className="h-screen">
       <Header />
@@ -72,7 +82,7 @@ export default function Create() {
               <Input 
                 label='Name'
                 value={form?.name}
-                onChange={(value) => onChange(value, 'name')}
+                onChange={(value) => onChange(toSentenceCase(value), 'name')}
                 placeholder="Enter student's name"
                 renderIcon={<AiOutlineUser className="text-2xl text-primary-1 group-hover:text-light" />}
               />
@@ -97,7 +107,7 @@ export default function Create() {
                 renderIcon={<AiOutlineAccountBook className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 
-                label='Level (University or Secondary or High School or Primary)'
+                label='Level (University/High School/Secondary or Primary School)'
                 value={form?.level}
                 onChange={(value) => onChange(value, 'level')}
                 placeholder="Enter education level"
@@ -122,7 +132,6 @@ export default function Create() {
                 value={form?.phone}
                 onChange={(value) => onChange(value, 'phone')}
                 placeholder="Enter phone number"
-                type="number"
                 renderIcon={<AiOutlinePhone className="text-2xl text-primary-1 group-hover:text-light" />}
               />
               <Input 
