@@ -89,7 +89,10 @@ export async function getStaticProps() {
 
   const students = await prisma.student.findMany({
     orderBy: {
-      name: 'asc',
+      name: {
+        order: 'asc',
+        mode: 'insensitive'
+      }
     }
   });
   return { 
