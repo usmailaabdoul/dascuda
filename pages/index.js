@@ -9,7 +9,6 @@ import {studentsData} from '../utils/data';
 import { analytics } from '../tracking/segment';
 
 export default function App({students}) {
-  console.log({students})
   const router = useRouter();
   const [data, setData] = useState(students ?? []);
   const [term, setTerm] = useState('');
