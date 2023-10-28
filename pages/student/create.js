@@ -1,17 +1,23 @@
 'use client'
 
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import Input from "../../components/input";
 import Select from "../../components/select";
-import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook, AiOutlineCalendar } from "react-icons/ai";
 import { BsGenderAmbiguous } from "react-icons/bs";
+import { GiGraduateCap } from "react-icons/gi";
 import Swal from 'sweetalert2'
+import { analytics } from '../../tracking/segment';
 
 export default function Create() {
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    analytics.page('Create')
+  }, [])
 
   const addStudent = async () => {
     setLoading(true)
@@ -24,6 +30,8 @@ export default function Create() {
         body: JSON.stringify(form)
       });
       res = await res.json();
+      analytics.track('Created New Student', res);
+
       setLoading(false);
       setForm({
         name: '',
@@ -33,6 +41,8 @@ export default function Create() {
         class: '',
         parents_name: '',
         phone: '',
+        graduated: '',
+        graduation_date: '',
         child_location: '',
         parents_location: '',
       })
@@ -54,6 +64,10 @@ export default function Create() {
 
   const onChange = (value, field) => {
     const data = {...form}
+    if (field == 'graduated' && value == 'false') {
+      if (data['graduation_date']?.length) delete data['graduation_date'];
+    }
+
     data[field] = value;
     setForm(data)
   }
@@ -120,6 +134,24 @@ export default function Create() {
                 placeholder="Enter class"
                 renderIcon={<AiOutlineReconciliation className="text-2xl text-primary-1 group-hover:text-light" />}
               />
+              <Select 
+                label='Graduate'
+                value={form?.graduated}
+                onChange={(value) => onChange(value, 'graduated')}
+                placeholder='Select student status'
+                options={[{value: true, label: 'Yes'}, {value: false, label: 'No'}]}
+                renderIcon={<GiGraduateCap className="text-2xl text-primary-1 group-hover:text-light" />}
+              />
+              {form.graduated && (
+                <Input 
+                  label='Year Graduated'
+                  value={form?.graduation_date}
+                  type="date"
+                  onChange={(value) => onChange(value, 'graduation_date')}
+                  placeholder="Enter year of graduation"
+                  renderIcon={<AiOutlineCalendar className="text-2xl text-primary-1 group-hover:text-light" />}
+                />
+              )}
               <Input 
                 label='Parents or Guardian Name'
                 value={form?.parents_name}

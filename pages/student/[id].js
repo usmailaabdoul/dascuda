@@ -4,11 +4,14 @@ import Header from "../../components/header";
 import Footer from "../../components/footer";
 import Input from "../../components/input";
 import Select from "../../components/select";
-import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook, AiOutlineCalendar } from "react-icons/ai";
 import { BsGenderAmbiguous } from "react-icons/bs";
+import { GiGraduateCap } from "react-icons/gi";
+import { analytics } from '../../tracking/segment';
+
 import Swal from 'sweetalert2'
 
-export default function Update(props) {
+export default function Update() {
   const router = useRouter();
   const studentId = router.query.id;
 
@@ -16,6 +19,10 @@ export default function Update(props) {
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
+
+  useEffect(() => {
+    analytics.page('Edit')
+  }, [])
 
   useEffect(() => {
     const getStudent = async () => {
@@ -28,6 +35,8 @@ export default function Update(props) {
           },
         });
         res = await res.json();
+        analytics.track('Student Viewed', res);
+
         setStudent(res);
         setLoading(false);
       } catch (error) {
@@ -54,6 +63,7 @@ export default function Update(props) {
         body: JSON.stringify(form)
       });
       res = await res.json();
+      analytics.track('Updated Student', res);
       setStudent(res);
       setUpdating(false);
       Swal.fire({
@@ -74,6 +84,12 @@ export default function Update(props) {
   const onChange = (value, field) => {
     const data = {...form}
     const _student = {...student}
+
+    if (field == 'graduated' && value == 'false') {
+      if (data['graduation_date']?.length) delete data['graduation_date'];
+      if (_student['graduation_date']?.length) delete _student['graduation_date'];
+    }
+
     data[field] = value;
     _student[field] = value;
     setForm(data)
@@ -134,6 +150,24 @@ export default function Update(props) {
                 placeholder="Enter class"
                 renderIcon={<AiOutlineReconciliation className="text-2xl text-primary-1 group-hover:text-light" />}
               />
+              <Select 
+                label='Graduate'
+                value={student?.graduated}
+                onChange={(value) => onChange(value, 'graduated')}
+                placeholder='Select student status'
+                options={[{value: 'yes', label: 'Yes'}, {value: 'no', label: 'No'}]}
+                renderIcon={<GiGraduateCap className="text-2xl text-primary-1 group-hover:text-light" />}
+              />
+              {student?.graduated && student?.graduated == 'yes' && (
+                <Input 
+                  label='Year Graduated'
+                  value={student?.graduation_date}
+                  type="date"
+                  onChange={(value) => onChange(value, 'graduation_date')}
+                  placeholder="Enter year of graduation"
+                  renderIcon={<AiOutlineCalendar className="text-2xl text-primary-1 group-hover:text-light" />}
+                />
+              )}
               <Input 
                 value={student?.parents_name}
                 onChange={(value) => onChange(value, 'parents_name')}
