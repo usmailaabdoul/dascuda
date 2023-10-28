@@ -20,6 +20,12 @@ export default function Create() {
   }, [])
 
   const addStudent = async () => {
+    if (!form?.name?.length) return Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Unable to add new student, name is required',
+    })
+    
     setLoading(true)
     try {
       let res = await fetch(`/api/student/add`, {

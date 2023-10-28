@@ -53,6 +53,12 @@ export default function Update() {
   }, [studentId])
 
   const updateStudent = async () => {
+    if (!form?.name?.length) return Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Unable to update student, name is required',
+    })
+
     setUpdating(true)
     try {
       let res = await fetch(`/api/student/${studentId}`, {
