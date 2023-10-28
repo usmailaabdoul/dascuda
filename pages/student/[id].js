@@ -4,11 +4,13 @@ import Header from "../../components/header";
 import Footer from "../../components/footer";
 import Input from "../../components/input";
 import Select from "../../components/select";
-import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook, AiOutlineCalendar } from "react-icons/ai";
 import { BsGenderAmbiguous } from "react-icons/bs";
+import { GiGraduateCap } from "react-icons/gi";
+
 import Swal from 'sweetalert2'
 
-export default function Update(props) {
+export default function Update() {
   const router = useRouter();
   const studentId = router.query.id;
 
@@ -134,6 +136,24 @@ export default function Update(props) {
                 placeholder="Enter class"
                 renderIcon={<AiOutlineReconciliation className="text-2xl text-primary-1 group-hover:text-light" />}
               />
+              <Select 
+                label='Graduate'
+                value={student?.graduated}
+                onChange={(value) => onChange(value, 'graduated')}
+                placeholder='Select student status'
+                options={[{value: 'yes', label: 'Yes'}, {value: 'no', label: 'No'}]}
+                renderIcon={<GiGraduateCap className="text-2xl text-primary-1 group-hover:text-light" />}
+              />
+              {student.graduated && student.graduated == 'yes' && (
+                <Input 
+                  label='Year Graduated'
+                  value={student?.graduation_date}
+                  type="date"
+                  onChange={(value) => onChange(value, 'graduation_date')}
+                  placeholder="Enter year of graduation"
+                  renderIcon={<AiOutlineCalendar className="text-2xl text-primary-1 group-hover:text-light" />}
+                />
+              )}
               <Input 
                 value={student?.parents_name}
                 onChange={(value) => onChange(value, 'parents_name')}

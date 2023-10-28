@@ -5,8 +5,9 @@ import Header from "../../components/header";
 import Footer from "../../components/footer";
 import Input from "../../components/input";
 import Select from "../../components/select";
-import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook, AiOutlineCalendar } from "react-icons/ai";
 import { BsGenderAmbiguous } from "react-icons/bs";
+import { GiGraduateCap } from "react-icons/gi";
 import Swal from 'sweetalert2'
 
 export default function Create() {
@@ -33,6 +34,8 @@ export default function Create() {
         class: '',
         parents_name: '',
         phone: '',
+        graduated: '',
+        graduation_date: '',
         child_location: '',
         parents_location: '',
       })
@@ -120,6 +123,24 @@ export default function Create() {
                 placeholder="Enter class"
                 renderIcon={<AiOutlineReconciliation className="text-2xl text-primary-1 group-hover:text-light" />}
               />
+              <Select 
+                label='Graduate'
+                value={form?.graduated}
+                onChange={(value) => onChange(value, 'graduated')}
+                placeholder='Select student status'
+                options={[{value: 'yes', label: 'Yes'}, {value: 'no', label: 'No'}]}
+                renderIcon={<GiGraduateCap className="text-2xl text-primary-1 group-hover:text-light" />}
+              />
+              {form.graduated && form.graduated == 'yes' && (
+                <Input 
+                  label='Year Graduated'
+                  value={form?.graduation_date}
+                  type="date"
+                  onChange={(value) => onChange(value, 'graduation_date')}
+                  placeholder="Enter year of graduation"
+                  renderIcon={<AiOutlineCalendar className="text-2xl text-primary-1 group-hover:text-light" />}
+                />
+              )}
               <Input 
                 label='Parents or Guardian Name'
                 value={form?.parents_name}
