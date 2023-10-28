@@ -6,11 +6,17 @@ import Footer from '../components/footer'
 import StudentsList from '../components/students-list'
 import prisma from '../lib/prisma';
 import {studentsData} from '../utils/data';
+import { analytics } from '../tracking/segment';
 
 export default function App({students}) {
+  console.log({students})
   const router = useRouter();
   const [data, setData] = useState(students ?? []);
   const [term, setTerm] = useState('');
+
+  useEffect(() => {
+    analytics.page('Home')
+  }, [])
 
   useEffect(() => {
     setData(students)

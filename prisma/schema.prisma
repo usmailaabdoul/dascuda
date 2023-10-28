@@ -23,4 +23,5 @@ model Student {
   parents_location   String?
   graduated String?
   graduation_date String?
+  created_at DateTime? @default(now())
 }

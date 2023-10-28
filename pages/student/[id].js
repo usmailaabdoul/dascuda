@@ -7,6 +7,7 @@ import Select from "../../components/select";
 import { AiOutlineUser, AiOutlineBook, AiOutlineReconciliation, AiOutlineTeam, AiOutlinePhone, AiOutlineTag, AiOutlineAccountBook, AiOutlineCalendar } from "react-icons/ai";
 import { BsGenderAmbiguous } from "react-icons/bs";
 import { GiGraduateCap } from "react-icons/gi";
+import { analytics } from '../../tracking/segment';
 
 import Swal from 'sweetalert2'
 
@@ -20,6 +21,10 @@ export default function Update() {
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
+    analytics.page('Edit')
+  }, [])
+
+  useEffect(() => {
     const getStudent = async () => {
       setLoading(true)
       try {
@@ -30,6 +35,8 @@ export default function Update() {
           },
         });
         res = await res.json();
+        analytics.track('Student Viewed', res);
+
         setStudent(res);
         setLoading(false);
       } catch (error) {
@@ -56,6 +63,7 @@ export default function Update() {
         body: JSON.stringify(form)
       });
       res = await res.json();
+      analytics.track('Updated Student', res);
       setStudent(res);
       setUpdating(false);
       Swal.fire({
@@ -76,6 +84,12 @@ export default function Update() {
   const onChange = (value, field) => {
     const data = {...form}
     const _student = {...student}
+
+    if (field == 'graduated' && value == 'false') {
+      if (data['graduation_date']?.length) delete data['graduation_date'];
+      if (_student['graduation_date']?.length) delete _student['graduation_date'];
+    }
+
     data[field] = value;
     _student[field] = value;
     setForm(data)
@@ -144,7 +158,7 @@ export default function Update() {
                 options={[{value: 'yes', label: 'Yes'}, {value: 'no', label: 'No'}]}
                 renderIcon={<GiGraduateCap className="text-2xl text-primary-1 group-hover:text-light" />}
               />
-              {student.graduated && student.graduated == 'yes' && (
+              {student?.graduated && student?.graduated == 'yes' && (
                 <Input 
                   label='Year Graduated'
                   value={student?.graduation_date}
