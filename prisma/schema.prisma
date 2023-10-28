@@ -21,4 +21,6 @@ model Student {
   phone   String?
   child_location   String?
   parents_location   String?
+  graduated String?
+  graduation_date String?
 }
