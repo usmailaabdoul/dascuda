@@ -35,10 +35,19 @@ export default function Create() {
         },
         body: JSON.stringify(form)
       });
+      
+      setLoading(false);
+      if (!res.ok) {
+        analytics.track('Student create Error', res);
+        return Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Unable to add new student, internal error',
+        })
+      }
+
       res = await res.json();
       analytics.track('Created New Student', res);
-
-      setLoading(false);
       setForm({
         name: '',
         gender: '',

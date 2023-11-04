@@ -34,11 +34,20 @@ export default function Update() {
             'Content-Type': 'application/json'
           },
         });
+        
+        setLoading(false);
+        if (!res.ok) {
+          analytics.track('Student Viewed Error', res);
+          return Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Unable to GET student, internal error',
+          })
+        }
+
         res = await res.json();
         analytics.track('Student Viewed', res);
-
         setStudent(res);
-        setLoading(false);
       } catch (error) {
         setLoading(false);
         Swal.fire({
@@ -68,10 +77,21 @@ export default function Update() {
         },
         body: JSON.stringify(form)
       });
+      
+      
+      setUpdating(false);
+      if (!res.ok) {
+        analytics.track('Student update Error', res);
+        return Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Unable to update student, internal error',
+        })
+      }
+
       res = await res.json();
       analytics.track('Updated Student', res);
       setStudent(res);
-      setUpdating(false);
       Swal.fire({
         icon: 'success',
         title: 'Success',
