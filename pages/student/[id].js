@@ -62,7 +62,7 @@ export default function Update() {
   }, [studentId])
 
   const updateStudent = async () => {
-    if (!form?.name?.length) return Swal.fire({
+    if (form?.name && form?.name.length == 0) return Swal.fire({
       icon: 'error',
       title: 'Oops...',
       text: 'Unable to update student, name is required',
